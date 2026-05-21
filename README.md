@@ -15,5 +15,5 @@ Pubblico di riferimento:
 Informativo
 
 ## Stile:
-Testi -> Narrativo
-Grafiche -> Neutro/Minimalist
+- Testi -> Narrativo
+- Grafiche -> Neutro/Minimalist
