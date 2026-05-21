@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Galleria Foto — Gita Scolastica 2026</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+    :root {
+      --sky:   #d4eaf7;
+      --sun:   #f5c842;
+      --green: #2d6a4f;
+      --bark:  #5c3d2e;
+      --cream: #fdf8f0;
+      --ink:   #1a1a2e;
+      --accent:#e76f51;
+    }
+ 
+    html { scroll-behavior: smooth; }
+ 
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+ 
+    /* ── NAV ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(253,248,240,.9);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--green);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink);
+      font-size: .9rem;
+      transition: color .2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--green); font-weight: 500; }
+ 
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background: linear-gradient(135deg, var(--green) 0%, #52b788 100%);
+      color: #fff;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+ 
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+ 
+    .page-header .label {
+      display: inline-block;
+      background: rgba(255,255,255,.2);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 3px;
+      padding: .3rem .9rem;
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+ 
+    .page-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      line-height: 1.1;
+      margin-bottom: .8rem;
+    }
+    .page-header h1 em { font-style: italic; color: var(--sun); }
+ 
+    .page-header p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,.8);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+ 
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background: #fff;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .6rem;
+      flex-wrap: wrap;
+    }
+ 
+    .filter-btn {
+      padding: .45rem 1.1rem;
+      border-radius: 100px;
+      border: 2px solid transparent;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--cream);
+      color: var(--ink);
+      transition: all .2s;
+    }
+    .filter-btn:hover        { border-color: var(--green); color: var(--green); }
+    .filter-btn.active       { background: var(--green); color: #fff; border-color: var(--green); }
+ 
+    /* ── GALLERY GRID ── */
+    .gallery-section {
+      padding: 3rem 2rem 5rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+ 
+    .gallery-group { margin-bottom: 3.5rem; }
+ 
+    .gallery-group-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--ink);
+      margin-bottom: 1.2rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--green);
+      display: inline-block;
+    }
+ 
+    /* Masonry-style grid using CSS columns */
+    .masonry {
+      columns: 4 220px;
+      column-gap: 1rem;
+    }
+ 
+    .photo-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: #e8f4ef;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .photo-item:hover {
+      transform: scale(1.02);
+      box-shadow: 0 12px 36px rgba(0,0,0,.18);
+      z-index: 2;
+    }
+ 
+    .photo-item img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+ 
+    /* placeholder tiles (coloured + emoji, for when no real image is loaded) */
+    .photo-placeholder {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      color: rgba(255,255,255,.85);
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .05em;
+    }
+ 
+    .photo-placeholder .ph-icon { font-size: 2.5rem; }
+ 
+    .photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.65) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity .2s;
+      display: flex;
+      align-items: flex-end;
+      padding: 1rem;
+    }
+    .photo-item:hover .photo-overlay { opacity: 1; }
+ 
+    .photo-caption {
+      color: #fff;
+      font-size: .82rem;
+      line-height: 1.4;
+    }
+    .photo-caption strong { display: block; font-size: .9rem; margin-bottom: .1rem; }
+ 
+    /* expand icon */
+    .photo-expand {
+      position: absolute;
+      top: .7rem; right: .7rem;
+      background: rgba(255,255,255,.9);
+      border-radius: 50%;
+      width: 32px; height: 32px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      opacity: 0;
+      transition: opacity .2s;
+    }
+    .photo-item:hover .photo-expand { opacity: 1; }
+ 
+    /* ── LIGHTBOX ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(0,0,0,.92);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 2rem;
+      animation: lbFade .25s ease;
+    }
+    .lightbox.open { display: flex; }
+ 
+    @keyframes lbFade { from{opacity:0} to{opacity:1} }
+ 
+    .lightbox-img-wrap {
+      max-width: 900px;
+      width: 100%;
+      max-height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+ 
+    .lightbox-img-wrap img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      border-radius: 6px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.5);
+    }
+ 
+    /* Lightbox placeholder */
+    .lb-placeholder {
+      width: 100%;
+      max-width: 900px;
+      height: 60vh;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      font-size: 5rem;
+    }
+ 
+    .lightbox-info {
+      margin-top: 1.2rem;
+      text-align: center;
+      color: rgba(255,255,255,.9);
+    }
+    .lightbox-info strong { display: block; font-size: 1.1rem; }
+    .lightbox-info span   { font-size: .9rem; color: rgba(255,255,255,.55); }
+ 
+    .lb-close {
+      position: fixed;
+      top: 1.5rem; right: 1.5rem;
+      background: rgba(255,255,255,.15);
+      border: none;
+      color: #fff;
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      font-size: 1.4rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lb-close:hover { background: rgba(255,255,255,.3); }
+ 
+    .lb-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,.12);
+      border: none;
+      color: #fff;
+      width: 50px; height: 50px;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .lb-nav:hover { background: rgba(255,255,255,.25); }
+    .lb-prev { left: 1.2rem; }
+    .lb-next { right: 1.2rem; }
+ 
+    /* ── UPLOAD AREA ── */
+    .upload-section {
+      background: #f0f7f4;
+      padding: 4rem 2rem;
+      text-align: center;
+    }
+ 
+    .upload-box {
+      max-width: 520px;
+      margin: 2rem auto 0;
+      border: 2.5px dashed #52b788;
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
+    }
+    .upload-box:hover { border-color: var(--green); background: #f0f7f4; }
+ 
+    .upload-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .upload-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: .5rem; }
+    .upload-box p  { font-size: .9rem; color: #4a5568; margin-bottom: 1.2rem; }
+ 
+    .upload-box input[type="file"] { display: none; }
+ 
+    .btn {
+      display: inline-block;
+      padding: .7rem 1.6rem;
+      border-radius: 4px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .92rem;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      border: none;
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,.15); }
+    .btn-primary { background: var(--green); color: #fff; }
+    .btn-outline  { background: transparent; color: var(--green); border: 2px solid var(--green); }
+ 
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      padding: 2.5rem;
+      background: var(--ink);
+      flex-wrap: wrap;
+    }
+ 
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--sun);
+      display: block;
+    }
+    .stat-lbl { font-size: .8rem; color: rgba(255,255,255,.55); letter-spacing: .08em; text-transform: uppercase; }
+ 
+    /* ── FOOTER ── */
+    footer {
+      background: #111827;
+      color: rgba(255,255,255,.5);
+      text-align: center;
+      padding: 1.8rem;
+      font-size: .85rem;
+    }
+    footer strong { color: #fff; }
+ 
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .masonry { columns: 2 140px; }
+      .nav-links { display: none; }
+      .lb-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="index.html">🌿 Gita 2026</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="index.html#about">La Gita</a></li>
+    <li><a href="index.html#programma">Programma</a></li>
+    <li><a href="galleria.html" class="active">📸 Galleria</a></li>
+  </ul>
+</nav>
+ 
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <span class="label">I nostri ricordi</span>
+  <h1>Galleria <em>Fotografica</em></h1>
+  <p>Ogni scatto racconta un momento speciale della nostra avventura. Scorri, esplora e rivivi insieme a noi!</p>
+</div>
+ 
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat"><span class="stat-num" id="stat-photos">0</span><span class="stat-lbl">Foto</span></div>
+  <div class="stat"><span class="stat-num">3</span><span class="stat-lbl">Giorni</span></div>
+  <div class="stat"><span class="stat-num">24</span><span class="stat-lbl">Studenti</span></div>
+  <div class="stat"><span class="stat-num">∞</span><span class="stat-lbl">Ricordi</span></div>
+</div>
+ 
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" data-filter="all">Tutte</button>
+  <button class="filter-btn" data-filter="giorno1">🌅 Giorno 1</button>
+  <button class="filter-btn" data-filter="giorno2">🌿 Giorno 2</button>
+  <button class="filter-btn" data-filter="giorno3">🏠 Giorno 3</button>
+  <button class="filter-btn" data-filter="natura">🍃 Natura</button>
+  <button class="filter-btn" data-filter="gruppo">👥 Gruppo</button>
+  <button class="filter-btn" data-filter="cultura">🏛️ Cultura</button>
+</div>
+ 
+<!-- GALLERY GRID -->
+<main class="gallery-section">
+ 
+  <!-- GIORNO 1 -->
+  <div class="gallery-group" data-group="giorno1">
+    <h2 class="gallery-group-title">🌅 Giorno 1 — Arrivo e prime scoperte</h2>
+    <div class="masonry" id="grid-giorno1">
+ 
+      <!-- Slot 1 -->
+      <div class="photo-item" data-tags="giorno1 gruppo" data-title="Partenza!" data-caption="Il grande giorno è arrivato" onclick="openLightbox(this)">
+        <!-- ↓↓ SOSTITUISCI src con il percorso della tua foto ↓↓ -->
+        <!-- <img src="foto/giorno1_001.jpg" alt="Partenza"> -->
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#2d6a4f,#52b788);height:200px">
+          <span class="ph-icon">🚌</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Partenza!</strong>Il grande giorno è arrivato</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <!-- Slot 2 -->
+      <div class="photo-item" data-tags="giorno1 natura" data-title="Prima sosta panoramica" data-caption="Che vista incredibile!" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#a8d8ea,#4da6c8);height:260px">
+          <span class="ph-icon">🏔️</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Prima sosta panoramica</strong>Che vista incredibile!</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <!-- Slot 3 -->
+      <div class="photo-item" data-tags="giorno1 cultura" data-title="Centro storico" data-caption="Le vie del borgo antico" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#e9c46a,#f4a261);height:180px">
+          <span class="ph-icon">🏛️</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Centro storico</strong>Le vie del borgo antico</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <!-- Slot 4 -->
+      <div class="photo-item" data-tags="giorno1 gruppo" data-title="Selfie di gruppo" data-caption="La classe 3B al completo!" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#e76f51,#c1440e);height:240px">
+          <span class="ph-icon">🤳</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Selfie di gruppo</strong>La classe 3B al completo!</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <!-- Slot 5 — AGGIUNGI QUANTE VUOI -->
+      <div class="photo-item" data-tags="giorno1" data-title="Prima sera" data-caption="Cena tutti insieme" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#457b9d,#1d3557);height:200px">
+          <span class="ph-icon">🍽️</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Prima sera</strong>Cena tutti insieme</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- GIORNO 2 -->
+  <div class="gallery-group" data-group="giorno2">
+    <h2 class="gallery-group-title">🌿 Giorno 2 — Natura e laboratorio</h2>
+    <div class="masonry" id="grid-giorno2">
+ 
+      <div class="photo-item" data-tags="giorno2 natura" data-title="Trekking" data-caption="Tra boschi e sentieri" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#1b4332,#2d6a4f);height:240px">
+          <span class="ph-icon">🌲</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Trekking</strong>Tra boschi e sentieri</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <div class="photo-item" data-tags="giorno2 natura" data-title="Vista sul lago" data-caption="Un momento di pura magia" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#56cfe1,#0096c7);height:190px">
+          <span class="ph-icon">💧</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Vista sul lago</strong>Un momento di pura magia</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <div class="photo-item" data-tags="giorno2 gruppo" data-title="Laboratorio creativo" data-caption="Tutti artisti per un giorno!" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#f72585,#b5179e);height:260px">
+          <span class="ph-icon">🎨</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Laboratorio creativo</strong>Tutti artisti per un giorno!</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <div class="photo-item" data-tags="giorno2 gruppo" data-title="Pausa pranzo" data-caption="Meritata sosta al ristorante" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#f4a261,#e76f51);height:210px">
+          <span class="ph-icon">🥗</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Pausa pranzo</strong>Meritata sosta al ristorante</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+  <!-- GIORNO 3 -->
+  <div class="gallery-group" data-group="giorno3">
+    <h2 class="gallery-group-title">🏠 Giorno 3 — Ultimi ricordi e ritorno</h2>
+    <div class="masonry" id="grid-giorno3">
+ 
+      <div class="photo-item" data-tags="giorno3 gruppo" data-title="Ultima colazione" data-caption="Un'ultima mattina insieme" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#f5c842,#e9a010);height:200px">
+          <span class="ph-icon">☕</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Ultima colazione</strong>Un'ultima mattina insieme</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <div class="photo-item" data-tags="giorno3 cultura" data-title="Visita finale" data-caption="L'ultimo punto d'interesse" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#6a0572,#ab0e91);height:250px">
+          <span class="ph-icon">🏰</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Visita finale</strong>L'ultimo punto d'interesse</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+      <div class="photo-item" data-tags="giorno3 gruppo" data-title="Arrivederci!" data-caption="Ci portiamo a casa mille ricordi" onclick="openLightbox(this)">
+        <div class="photo-placeholder" style="background:linear-gradient(135deg,#2d6a4f,#1b4332);height:220px">
+          <span class="ph-icon">👋</span>
+          <span>Inserisci foto</span>
+        </div>
+        <div class="photo-overlay">
+          <div class="photo-caption"><strong>Arrivederci!</strong>Ci portiamo a casa mille ricordi</div>
+        </div>
+        <div class="photo-expand">⛶</div>
+      </div>
+ 
+    </div>
+  </div>
+ 
+</main>
+ 
+<!-- UPLOAD SECTION -->
+<section class="upload-section">
+  <span style="display:block;font-size:.72rem;font-weight:500;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);margin-bottom:.5rem">Contribuisci</span>
+  <h2 style="font-family:'Playfair Display',serif;font-size:2rem;margin-bottom:.5rem">Hai altre foto?</h2>
+  <p style="color:#4a5568;max-width:420px;margin:0 auto">Aggiungile alla galleria! Seleziona le immagini dal tuo dispositivo per includerle nella collezione.</p>
+ 
+  <div class="upload-box" onclick="document.getElementById('file-input').click()">
+    <span class="upload-icon">📁</span>
+    <h3>Trascina le foto qui</h3>
+    <p>oppure clicca per selezionare i file<br><small style="color:#9ca3af">JPG, PNG, WebP · Max 10 MB per foto</small></p>
+    <button class="btn btn-primary" type="button" onclick="event.stopPropagation();document.getElementById('file-input').click()">Scegli foto</button>
+    <input type="file" id="file-input" multiple accept="image/*" onchange="handleUpload(event)">
+  </div>
+ 
+  <div id="upload-preview" style="max-width:900px;margin:1.5rem auto 0;display:none">
+    <h3 style="font-family:'Playfair Display',serif;margin-bottom:1rem">Foto caricate in questa sessione</h3>
+    <div id="preview-grid" style="columns:4 180px;column-gap:1rem"></div>
+  </div>
+</section>
+ 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lb-close" onclick="closeLb()">✕</button>
+  <button class="lb-nav lb-prev" onclick="navLb(-1);event.stopPropagation()">‹</button>
+  <button class="lb-nav lb-next" onclick="navLb(1);event.stopPropagation()"  >›</button>
+  <div class="lightbox-img-wrap" id="lb-img-wrap">
+    <!-- image or placeholder injected here -->
+  </div>
+  <div class="lightbox-info" id="lb-info"></div>
+</div>
+ 
+<!-- FOOTER -->
+<footer>
+  <strong>Gita Scolastica 2026 — Classe 3B</strong><br>
+  Sito realizzato con ❤️ dagli studenti · Tutti i diritti riservati
+</footer>
+ 
+<script>
+  /* ── STATS counter ── */
+  const total = document.querySelectorAll('.photo-item').length;
+  const el = document.getElementById('stat-photos');
+  let count = 0;
+  const timer = setInterval(() => {
+    count = Math.min(count + 1, total);
+    el.textContent = count;
+    if (count >= total) clearInterval(timer);
+  }, 60);
+ 
+  /* ── FILTER ── */
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.photo-item').forEach(item => {
+        const tags = (item.dataset.tags || '').split(' ');
+        item.style.display = (f === 'all' || tags.includes(f)) ? '' : 'none';
+      });
+    });
+  });
+ 
+  /* ── LIGHTBOX ── */
+  let currentItems = [];
+  let currentIndex = 0;
+ 
+  function openLightbox(el) {
+    currentItems = Array.from(document.querySelectorAll('.photo-item:not([style*="display: none"])'));
+    currentIndex = currentItems.indexOf(el);
+    renderLb();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+ 
+  function renderLb() {
+    const item  = currentItems[currentIndex];
+    const img   = item.querySelector('img');
+    const ph    = item.querySelector('.photo-placeholder');
+    const wrap  = document.getElementById('lb-img-wrap');
+    const info  = document.getElementById('lb-info');
+    const title = item.dataset.title   || '';
+    const cap   = item.dataset.caption || '';
+ 
+    if (img) {
+      wrap.innerHTML = `<img src="${img.src}" alt="${title}">`;
+    } else if (ph) {
+      const bg = ph.style.background;
+      const icon = ph.querySelector('.ph-icon')?.textContent || '📷';
+      wrap.innerHTML = `<div class="lb-placeholder" style="background:${bg}">${icon}</div>`;
+    }
+ 
+    info.innerHTML = `<strong>${title}</strong><span>${cap}</span>`;
+  }
+ 
+  function navLb(dir) {
+    currentIndex = (currentIndex + dir + currentItems.length) % currentItems.length;
+    renderLb();
+  }
+ 
+  function closeLb() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+ 
+  function closeLightbox(e) {
+    if (e.target === document.getElementById('lightbox')) closeLb();
+  }
+ 
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'ArrowLeft')  navLb(-1);
+    if (e.key === 'ArrowRight') navLb(1);
+    if (e.key === 'Escape')     closeLb();
+  });
+ 
+  /* ── UPLOAD PREVIEW ── */
+  function handleUpload(e) {
+    const files = Array.from(e.target.files);
+    if (!files.length) return;
+    const section = document.getElementById('upload-preview');
+    const grid    = document.getElementById('preview-grid');
+    section.style.display = 'block';
+ 
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const div = document.createElement('div');
+        div.className = 'photo-item';
+        div.style.marginBottom = '1rem';
+        div.innerHTML = `
+          <img src="${ev.target.result}" alt="${file.name}" style="width:100%;border-radius:6px;display:block">
+          <div class="photo-overlay" style="opacity:1;background:linear-gradient(to top,rgba(0,0,0,.5),transparent)">
+            <div class="photo-caption">${file.name}</div>
+          </div>`;
+        grid.appendChild(div);
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+ 
+  /* ── DRAG & DROP on upload box ── */
+  const box = document.querySelector('.upload-box');
+  box.addEventListener('dragover', e => { e.preventDefault(); box.style.borderColor = 'var(--green)'; });
+  box.addEventListener('dragleave', () => { box.style.borderColor = '#52b788'; });
+  box.addEventListener('drop', e => {
+    e.preventDefault();
+    box.style.borderColor = '#52b788';
+    const dt = e.dataTransfer;
+    if (dt.files.length) handleUpload({ target: { files: dt.files } });
+  });
+</script>
+ 
+</body>
+</html>
