@@ -11,9 +11,9 @@ Nel Sito si racconta il viaggio dal punto di vista del turista mentre nell'Ebook
 Pubblico di riferimento:
 25/30 anni
 
-Tipo di Testo:
+#Tipo di Testo:
 Informativo
 
-Stile:
+#Stile:
 Testi -> Narrativo
 Grafiche -> Neutro/Minimalist
