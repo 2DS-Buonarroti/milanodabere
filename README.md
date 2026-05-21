@@ -12,7 +12,7 @@ Pubblico di riferimento:
 25/30 anni
 
 ## Tipo di Testo:
-Informativo
+- Informativo
 
 ## Stile:
 - Testi -> Narrativo
