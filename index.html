@@ -1,1 +1,283 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diario della Nostra Gita Scolastica</title>
+    <style>
+        /* --- STILE GENERALE (CSS) --- */
+        :root {
+            --primary-color: #2a9d8f; /* Un verde-azzurro fresco */
+            --secondary-color: #264653; /* Blu scuro per i testi importanti */
+            --accent-color: #e76f51; /* Arancione per i dettagli */
+            --bg-light: #f8f9fa; /* Grigio chiarissimo per lo sfondo */
+            --text-dark: #333333;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background-color: #1d3557;
+            text-align: center;
+            padding: 10px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: var(--accent-color);
+        }
+
+        /* --- SEZIONI --- */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* --- DIARIO DI BORDO (Timeline/Card) --- */
+        .grid-diario {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card-giorno {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--primary-color);
+        }
+
+        .card-giorno h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+
+        .data {
+            font-size: 0.9rem;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* --- GALLERIA FOTOGRAFICA --- */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            aspect-ratio: 4 / 3;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.05);
+        }
+
+        /* --- INFO PRATICHE --- */
+        .info-box {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .info-box ul {
+            list-style-type: none;
+        }
+
+        .info-box li {
+            margin-bottom: 12px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .info-box li::before {
+            content: "📍";
+            position: absolute;
+            left: 0;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 600px) {
+            header h1 { font-size: 2rem; }
+            nav a { display: block; margin: 10px 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Intestazione del sito -->
+    <header>
+        <div class="container">
+            <h1>Gita Scolastica a [Città della Gita]</h1>
+            <p>Il racconto del nostro viaggio d'istruzione — Classe [Tua Classe] anno 2026</p>
+        </div>
+    </header>
+
+    <!-- Menu di navigazione interno -->
+    <nav>
+        <a href="#diario">Diario di Bordo</a>
+        <a href="#galleria">Foto</a>
+        <a href="#info">Dettagli</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- Sezione 1: Il Diario -->
+        <section id="diario">
+            <h2>Diario di Bordo</h2>
+            <div class="grid-diario">
+                
+                <div class="card-giorno">
+                    <h3>Giorno 1: La Partenza e l'Arrivo</h3>
+                    <div class="data">21 Maggio 2026</div>
+                    <p>Siamo partiti la mattina presto davanti alla scuola. Dopo qualche ora di viaggio in pullman, siamo finalmente arrivati a destinazione. Nel pomeriggio abbiamo visitato il centro storico e fatto i primi scatti fotografici.</p>
+                </div>
+
+                <div class="card-giorno">
+                    <h3>Giorno 2: Musei e Cultura</h3>
+                    <div class="data">22 Maggio 2026</div>
+                    <p>La mattinata è stata dedicata alla visita guidata del museo principale. Nel pomeriggio abbiamo fatto una passeggiata nel parco della città e fatto un bellissimo gioco a squadre organizzato dai professori.</p>
+                </div>
+
+                <div class="card-giorno">
+                    <h3>Giorno 3: Saluti e Rientro</h3>
+                    <div class="data">23 Maggio 2026</div>
+                    <p>Ultimo giorno! Abbiamo comprato i souvenir per i genitori e fatto l'ultimo pranzo insieme. Stanchi ma felici, siamo risaliti sul pullman per tornare a casa. Una gita indimenticabile!</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Sezione 2: Galleria Immagini -->
+        <section id="galleria">
+            <h2>I Nostri Scatti</h2>
+            <div class="gallery">
+                <!-- Sostituisci "placeholder.jpg" con i percorsi reali delle tue foto (es. "foto1.jpg") -->
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300" alt="Foto di gruppo">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300" alt="Monumento principale">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300" alt="Momento divertente">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://via.placeholder.com/400x300" alt="Paesaggio">
+                </div>
+            </div>
+        </section>
+
+        <!-- Sezione 3: Info Pratiche / Ricordi -->
+        <section id="info">
+            <h2>Dettagli del Viaggio</h2>
+            <div class="info-box">
+                <ul>
+                    <li><strong>Meta principale:</strong> [Nome Città / Luogo]</li>
+                    <li><strong>Periodo:</strong> Maggio 2026</li>
+                    <li><strong>Professori Accompagnatori:</strong> Prof. Rossi, Prof.ssa Bianchi</li>
+                    <li><strong>Hotel:</strong> Hotel [Nome Hotel], Via delle Stelle 12</li>
+                    <li><strong>Km percorsi totali:</strong> Circa 450 km</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Piè di pagina -->
+    <footer>
+        <div class="container">
+            <p>Sito creato con ❤️ dalla classe [Tua Classe] | © 2026</p>
+        </div>
+    </footer>
+
+</body>
+</html>
