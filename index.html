@@ -7,11 +7,11 @@
     <style>
         /* --- STILE GENERALE (CSS) --- */
         :root {
-            --primary-color: #1D4ED8; /* Un verde-azzurro fresco */
-            --secondary-color: #6EE7B7; /* Blu scuro per i testi importanti */
-            --accent-color: #F97316; /* Arancione per i dettagli */
-            --bg-light: #F8F9FA; /* Grigio chiarissimo per lo sfondo */
-            --text-dark: #1A2530;
+            --primary-color: #1D4ED8;    /* Blu Avventura (Colore Identità/Titoli) */
+            --secondary-color: #6EE7B7;  /* Acqua Marina (Elementi Secondari/Sfondi Sezioni) */
+            --accent-color: #F97316;     /* Arancio Tramonto (Dettagli/Hover Risalto) */
+            --bg-light: #F8F9FA;         /* Sabbia Chiarissimo (Sfondo Sito) */
+            --text-dark: #1A2530;        /* Abisso (Testi leggibili) */
         }
 
         * {
@@ -36,7 +36,7 @@
 
         /* --- HEADER & NAV --- */
         header {
-            background-color: var(--secondary-color);
+            background-color: var(--primary-color); /* Cambiato in colore principale per dare impatto */
             color: white;
             padding: 40px 0;
             text-align: center;
@@ -53,7 +53,7 @@
         }
 
         nav {
-            background-color: #1d3557;
+            background-color: var(--text-dark); /* Coerente con la palette, crea un ottimo stacco scuro */
             text-align: center;
             padding: 10px 0;
             position: sticky;
@@ -70,7 +70,7 @@
         }
 
         nav a:hover {
-            color: var(--accent-color);
+            color: var(--accent-color); /* L'arancione di risalto al passaggio del mouse */
         }
 
         /* --- SEZIONI --- */
@@ -80,7 +80,7 @@
         }
 
         h2 {
-            color: var(--secondary-color);
+            color: var(--primary-color); /* I titoli principali prendono il Blu Avventura */
             margin-bottom: 30px;
             position: relative;
             padding-bottom: 10px;
@@ -93,7 +93,7 @@
             bottom: 0;
             width: 50px;
             height: 4px;
-            background-color: var(--primary-color);
+            background-color: var(--accent-color); /* La linea sotto i titoli in Arancio dà un tocco pazzesco */
             border-radius: 2px;
         }
 
@@ -113,7 +113,7 @@
         }
 
         .card-giorno h3 {
-            color: var(--secondary-color);
+            color: var(--primary-color);
             margin-bottom: 10px;
         }
 
@@ -156,6 +156,7 @@
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-left: 5px solid var(--secondary-color); /* Un tocco di Acqua Marina sul fianco del box info */
         }
 
         .info-box ul {
@@ -176,7 +177,7 @@
 
         /* --- FOOTER --- */
         footer {
-            background-color: var(--secondary-color);
+            background-color: var(--primary-color); /* Chiusura coerente con l'apertura del sito */
             color: white;
             text-align: center;
             padding: 20px 0;
@@ -227,7 +228,6 @@
         <section id="galleria">
             <h2>I Nostri Scatti</h2>
             <div class="gallery">
-                <!-- Sostituisci "placeholder.jpg" con i percorsi reali delle tue foto (es. "foto1.jpg") -->
                 <div class="gallery-item">
                     <img src="https://via.placeholder.com/400x300" alt="Foto di gruppo">
                 </div>
